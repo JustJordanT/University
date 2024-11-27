@@ -1,0 +1,40 @@
+﻿@page
+@model University.Students.UI.Pages.Students.StudentsModel
+@{
+    ViewData["Title"] = "Students";
+}
+<h1>Students</h1>
+<br />
+<form method="get">
+
+    <button class="btn btn-primary" asp-page="./Create" >Create Student</button>
+</form>
+
+<br />
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Age</th>
+            <th>Settings</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model.Students)
+        {
+            <tr>
+                <td>@student.Id</td>
+                <td>@student.Name</td>
+                <td>@student.Email</td>
+                <td>@student.Age</td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@student.Id">Edit</a> -
+                    <a asp-page="./Details" asp-route-id="@student.Id">Details</a> -
+                    <a asp-page="./Delete" asp-route-id="@student.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
