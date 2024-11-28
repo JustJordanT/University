@@ -1,5 +1,4 @@
 ﻿using Microsoft.Data.SqlClient;
-using System.Data;
 using University.Students.UI.Models;
 
 namespace University.Students.UI.Data
@@ -9,6 +8,28 @@ namespace University.Students.UI.Data
         private readonly string _connectionString;
 
         public StudentDAL(string connectionString) => _connectionString = connectionString;
+
+        public Student GetStudentById(int Id)
+        {
+            Student student = new Student();
+
+            using var connection = new SqlConnection(_connectionString);
+            connection.Open();
+
+            var command = new SqlCommand("SELECT Id, Name, Email, Age FROM Students WHERE Id = @Id", connection);
+            command.Parameters.AddWithValue("@Id", Id);
+
+            using var reader = command.ExecuteReader();
+            if (reader.Read())
+            {
+                student.Id = reader.GetInt32(0);
+                student.Name = reader.GetString(1);
+                student.Email = reader.GetString(2);
+                student.Age = reader.GetInt32(3);
+            }
+
+            return student;
+        }
 
         public IEnumerable<Student> GetStudents()
         {
@@ -59,5 +80,24 @@ namespace University.Students.UI.Data
 
             command.ExecuteNonQuery();
         }
+
+        public void DeleteStudent(int id)
+        {
+            try
+            {
+                using var connection = new SqlConnection(_connectionString);
+                connection.Open();
+
+                var command = new SqlCommand("DELETE FROM Students WHERE Id = @Id", connection);
+                command.Parameters.AddWithValue("@Id", id);
+                command.ExecuteNonQuery();
+            }
+            catch (SqlException ex)
+            {
+                // Log exception or handle it as needed
+                throw new Exception("An error occurred while deleting the student.", ex);
+            }
+        }
+
     }
 }

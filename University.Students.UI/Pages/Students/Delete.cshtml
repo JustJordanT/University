@@ -1,0 +1,22 @@
+﻿@page
+@model University.Students.UI.Pages.Students.DeleteModel
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+<a asp-page="./Index">Back to List</a>
+
+<h3>Are you sure you want to delete this?</h3>
+<div class="container">
+    <form method="post">
+        <p class="fw-bold text-danger">You are about to delete the following student</p>
+        <p>ID: @Model.Student.Id</p>
+        <p>Name: @Model.Student.Name</p>
+        <p>Email: @Model.Student.Email</p>
+        <p>Age: @Model.Student.Age</p>
+        <br />
+        <input type="hidden" asp-for="StudentId" value="@Model.StudentId" />
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+</div>
